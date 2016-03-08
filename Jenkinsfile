@@ -10,7 +10,8 @@ node ("aws-centos-7-SELinux-T2Medium"){
    sh 'v/bin/pip install . ./flocker[dev]  python-subunit junitxml https://twistedmatrix.com/Releases/pre/16.0.0pre2/Twisted-16.0.0pre2.tar.bz2'
    sh 'touch ${HOME}/.ssh/known_hosts'
    sshagent (credentials: []) {
-     sh 'ssh-add /tmp/id_rsa'
+     sh 'install -m 0600 -t . /tmp/id_rsa'
+     sh 'ssh-add id_rsa'
      sh 'v/bin/python flocker/admin/run-acceptance-tests --distribution centos-7 --provider aws --config-file /tmp/acceptance.yaml --branch master --dataset-backend ceph_flocker_driver -- --reporter=subunit'
    }
    sh 'cat trial.log | subunit-1to2 | subunit2junitxml --no-passthrough --output-to=results.xml'
