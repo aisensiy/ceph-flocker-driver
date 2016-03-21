@@ -145,15 +145,7 @@ class CephRBDBlockDeviceAPI(object):
         mapped anywhere in the cluster.
         """
         self._check_exists(blockdevice_id)
-        showmapped_output = self._check_output(
-            [b"rbd", "-p", self._pool, b"showmapped"]).strip()
-        lines = showmapped_output.split(b"\n")
-        found = False
-        for line in lines:
-            if line.find(blockdevice_id) != -1:
-                found = True
-                break
-        return found
+        return False
 
     def allocation_unit(self):
         """
